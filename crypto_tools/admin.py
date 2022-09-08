@@ -2,5 +2,9 @@ from django.contrib import admin
 
 from crypto_tools import models
 
-# Register your models here.
-admin.site.register([models.CryptoCoin])
+
+@admin.register(models.CryptoCoin)
+class CryptoCoinAdmin(admin.ModelAdmin):
+    list_display = ('serial_number', 'name', 'symbol', 'high', 'low', 'open', 'close',
+                    'volume', 'market_cap')
+    readonly_fields = ("serial_number", )

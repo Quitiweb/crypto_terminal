@@ -12,3 +12,11 @@ class CryptoCoin(models.Model):
     close = models.FloatField(default=0)
     volume = models.FloatField(default=0)
     market_cap = models.FloatField(default=0)
+
+    class Meta:
+        verbose_name = 'CryptoCoin'
+        verbose_name_plural = 'CryptoCoins'
+        unique_together = ('serial_number', 'name', )
+
+    def __str__(self):
+        return "{} {}".format(self.serial_number, self.name)
