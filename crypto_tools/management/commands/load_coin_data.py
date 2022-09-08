@@ -4,7 +4,7 @@ import os
 from django.core.management.base import BaseCommand
 
 from crypto_terminal.settings import BASE_DIR
-from ...models import CryptoCoin
+from crypto_tools.models import CryptoCoin
 
 
 class Command(BaseCommand):
@@ -16,15 +16,15 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         data_path = os.path.join('data', 'archive')
-        self.path = os.path.join(BASE_DIR, 'archive')
-        print(self.path)
-        return
+        self.path = os.path.join(BASE_DIR, data_path)
         self.load_coins()
 
     def load_coins(self):
         for fn in os.listdir(self.path):
-            with open(fn) as f:
+            fpath = os.path.join(self.path, fn)
+            with open(fpath) as f:
                 reader = csv.reader(f, delimiter=",")
+                next(reader, None)  # skip the headers
                 for row in reader:
                     _, created = CryptoCoin.objects.get_or_create(
                         serial_number=row[0], name=row[1], symbol=row[2], date=row[3],
