@@ -28,7 +28,8 @@ class Command(BaseCommand):
         files = os.listdir(self.path)
         len_files = len(files)
         for count, fn in enumerate(files):
-            print("Loading file {} of {}".format(count+1, len_files))
+            msg = "Loading file {} of {}".format(count+1, len_files)
+            print(msg, end="\r")
             fpath = os.path.join(self.path, fn)
             with open(fpath) as f:
                 reader = csv.reader(f, delimiter=",")
@@ -42,4 +43,6 @@ class Command(BaseCommand):
                         volume=row[8], market_cap=row[9]
                     )
 
+        print()
         print("All files have been processed successfully")
+        print()
