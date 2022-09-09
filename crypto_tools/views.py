@@ -34,3 +34,12 @@ class SymbolListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     queryset = CryptoCoin.objects.values('symbol').annotate(cs_count=Count('symbol'))
     serializer_class = ser.CoinSymbolListSerializer
     permission_classes = [IsAuthenticated]
+
+
+class CoinsListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+    """
+        Returns the list of Crypto Coins by name
+    """
+    queryset = CryptoCoin.objects.values('name').annotate(cc_count=Count('name'))
+    serializer_class = ser.CoinListSerializer
+    permission_classes = [IsAuthenticated]
