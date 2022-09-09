@@ -10,7 +10,7 @@ start_django_server:
 
 init_database:
 	source .venv/bin/activate && python manage.py migrate
-	source .venv/bin/activate && DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --noinput --username admin --email admin@admin.com
+	source .venv/bin/activate && DJANGO_SUPERUSER_PASSWORD=temporal2022 python manage.py createsuperuser --noinput --username admin --email admin@admin.com
 	make load_data
 
 load_data:
