@@ -6,3 +6,8 @@ class CoinSerializer(serializers.ModelSerializer):
     class Meta:
         model = CryptoCoin
         fields = "__all__"
+
+
+class CoinSymbolListSerializer(serializers.Serializer):
+    symbol = serializers.CharField()
+    cs_count = serializers.IntegerField()
