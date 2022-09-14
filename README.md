@@ -15,3 +15,11 @@ These are not necessary for evaluation, but the candidate can use them to showca
 - Load the data into SQLite
 - Create a REST API backend to serve the data to the tool
 - Create a dashboard with useful metrics and graphs
+
+
+## How to install Crypto Terminal locally
+1) Get the app from [GitHub repository](https://github.com/Quitiweb/crypto_terminal/) or unzip it from the file sent via email
+2) From `crypto_terminal` folder, run `make install` (creates a virtual env)
+3) Run `make init_database` (loads the data into SQLite)
+4) Run `make start_django_server` (starts the backend server)
+5) Final step: run `streamlit run st_dashboard.py` (runs the frontend using `streamlit`)
