@@ -43,3 +43,17 @@ class CoinsListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     queryset = CryptoCoin.objects.values('name').annotate(cc_count=Count('name'))
     serializer_class = ser.CoinListSerializer
     permission_classes = [IsAuthenticated]
+
+
+class ClosePriceViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
+    """
+        Endpoint to return the Close price value for the given coin symbol and date
+    """
+    serializer_class = ser.ClosePriceSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        symbol = self.kwargs['symbol']
+        cdate = self.kwargs['date']
+
+        return CryptoCoin.objects.filter(symbol=symbol, date__contains=cdate)
