@@ -16,9 +16,5 @@ class CoinSerializer(serializers.ModelSerializer):
 
 class CoinListSerializer(serializers.Serializer):
     name = serializers.CharField()
-    cc_count = serializers.IntegerField()
-
-
-class CoinSymbolListSerializer(serializers.Serializer):
     symbol = serializers.CharField()
-    cs_count = serializers.IntegerField()
+    cc_count = serializers.IntegerField()

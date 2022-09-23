@@ -27,20 +27,12 @@ class CoinsViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class SymbolListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
-    """
-        Returns the list of Crypto Coins Symbols
-    """
-    queryset = CryptoCoin.objects.values('symbol').annotate(cs_count=Count('symbol'))
-    serializer_class = ser.CoinSymbolListSerializer
-    permission_classes = [IsAuthenticated]
-
-
 class CoinsListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     """
         Returns the list of Crypto Coins by name
     """
-    queryset = CryptoCoin.objects.values('name').annotate(cc_count=Count('name'))
+    queryset = CryptoCoin.objects.values('name', 'symbol').annotate(
+        cc_count=Count('name'))
     serializer_class = ser.CoinListSerializer
     permission_classes = [IsAuthenticated]
 
