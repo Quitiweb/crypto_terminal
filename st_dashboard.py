@@ -2,7 +2,12 @@ import datetime
 import pandas as pd
 import streamlit as st
 
-from crypto_tools.utils import get_all_coins_from_api, get_close_price, get_coin_names_and_symbols
+from crypto_tools.utils import (
+    get_all_coins_from_api, get_close_price, get_coin_names_and_symbols,
+    get_min_max_dates
+)
+
+MIN_DATE, MAX_DATE = get_min_max_dates()
 
 
 def crypto_coins_count():
@@ -37,7 +42,8 @@ def question_two(coins_df):
     d = st.date_input(
         "Select a date to know its Close price",
         datetime.date(2020, 10, 7),
-        max_value=datetime.date.today()
+        min_value=MIN_DATE,
+        max_value=MAX_DATE
     )
     coin = st.selectbox(
         'Which coin would you like to check?',
@@ -50,6 +56,19 @@ def question_two(coins_df):
 def question_three():
     st.subheader("3. Given a start date and end date, what are the best "
                  "possible buy and sell times to maximise profit?")
+
+    dini = st.date_input(
+        "Select a start date",
+        datetime.date(2020, 10, 7),
+        min_value=MIN_DATE,
+        max_value=MAX_DATE
+    )
+    dend = st.date_input(
+        "Select an end date",
+        datetime.date(2021, 1, 3),
+        min_value=MIN_DATE,
+        max_value=MAX_DATE
+    )
 
 
 def main():

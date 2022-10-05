@@ -1,4 +1,6 @@
 from django.db.models import Count
+from django.http import JsonResponse
+from django.views import View
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -49,3 +51,15 @@ class ClosePriceViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
         cdate = self.kwargs['date']
 
         return CryptoCoin.objects.filter(symbol=symbol, date__contains=cdate)
+
+
+class MinMaxDatesViewSet(View):
+    """
+        Returns the minimum and maximum dates
+    """
+    def get(self, request):
+        min_date = CryptoCoin.objects.earliest('date').date
+        max_date = CryptoCoin.objects.latest('date').date
+
+        return JsonResponse({'min_date': min_date,
+                             'max_date': max_date})

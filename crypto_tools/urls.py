@@ -13,4 +13,5 @@ router.register(r'coins/close_price/(?P<symbol>\w+)/(?P<date>\d{4}-\d{2}-\d{2})'
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('min_and_max/', api_views.MinMaxDatesViewSet.as_view(), name='min_and_max'),
 ]
