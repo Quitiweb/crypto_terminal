@@ -23,3 +23,6 @@ These are not necessary for evaluation, but the candidate can use them to showca
 3) Run `make init_database` (loads the data into SQLite)
 4) Run `make start_django_server` (starts the backend server)
 5) Final step: run `streamlit run st_dashboard.py` (runs the frontend using `streamlit`)
+
+## Screenshot
+![image](https://user-images.githubusercontent.com/8633009/194383664-45df1bea-de68-427c-a5f9-17f1c82708e9.png)
