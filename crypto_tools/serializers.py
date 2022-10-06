@@ -18,3 +18,9 @@ class CoinListSerializer(serializers.Serializer):
     name = serializers.CharField()
     symbol = serializers.CharField()
     cc_count = serializers.IntegerField()
+
+
+class PricesAndDatesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CryptoCoin
+        fields = ('date', 'close')

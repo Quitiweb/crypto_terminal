@@ -4,7 +4,7 @@ import streamlit as st
 
 from crypto_tools.utils import (
     get_all_coins_from_api, get_close_price, get_coin_names_and_symbols,
-    get_min_max_dates
+    get_min_max_dates, buy_and_sell_times_to_maximise_profit
 )
 
 MIN_DATE, MAX_DATE = get_min_max_dates()
@@ -47,28 +47,46 @@ def question_two(coins_df):
     )
     coin = st.selectbox(
         'Which coin would you like to check?',
-        coins_df['symbol'])
+        coins_df['symbol']
+    )
 
-    st.success(get_close_price(coin, d))
+    st.success(str(get_close_price(coin, d)) + " €")
     st.markdown("---")
 
 
-def question_three():
+def question_three(coins_df):
     st.subheader("3. Given a start date and end date, what are the best "
                  "possible buy and sell times to maximise profit?")
 
-    dini = st.date_input(
+    ccoin = st.selectbox(
+        'Select a coin to show profits',
+        coins_df['symbol']
+    )
+    date_ini = st.date_input(
         "Select a start date",
-        datetime.date(2020, 10, 7),
+        datetime.date(2015, 6, 1),
         min_value=MIN_DATE,
         max_value=MAX_DATE
     )
-    dend = st.date_input(
+    date_end = st.date_input(
         "Select an end date",
-        datetime.date(2021, 1, 3),
+        datetime.date(2015, 7, 31),
         min_value=MIN_DATE,
         max_value=MAX_DATE
     )
+    st.markdown("---")
+
+    max_profit, buy_and_sell = buy_and_sell_times_to_maximise_profit(date_ini, date_end, ccoin)
+
+    "The maximum profit for this coin and the dates selected is"
+    st.success(str(max_profit) + " €")
+
+    "Best buy and sell times"
+    for idx, bs in enumerate(buy_and_sell):
+        if idx % 2:
+            st.success(bs)
+        else:
+            st.warning(bs)
 
 
 def main():
@@ -89,7 +107,7 @@ def main():
     question_two(coins_df)
 
     # Q3
-    question_three()
+    question_three(coins_df)
 
 
 # %%
