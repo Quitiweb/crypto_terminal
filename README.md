@@ -16,13 +16,17 @@ These are not necessary for evaluation, but the candidate can use them to showca
 - Create a REST API backend to serve the data to the tool
 - Create a dashboard with useful metrics and graphs
 
+## Versions used for this project
+1) `Python==3.8.10`
+2) `Django==4.1.1`
+3) `djangorestframework==3.13.1`
 
 ## How to install Crypto Terminal locally
 1) Get the app from [GitHub repository](https://github.com/Quitiweb/crypto_terminal/) or unzip it from the file sent via email
 2) From `crypto_terminal` folder, run `make install` (creates a virtual env)
 3) Run `make init_database` (loads the data into SQLite)
 4) Run `make start_django_server` (starts the backend server)
-5) Final step: run `streamlit run st_dashboard.py` (runs the frontend using `streamlit`)
+5) Final step: On a different terminal, run `make run_streamlit` (runs the frontend using `streamlit`)
 
 ## Screenshot
 ![image](https://user-images.githubusercontent.com/8633009/194383664-45df1bea-de68-427c-a5f9-17f1c82708e9.png)

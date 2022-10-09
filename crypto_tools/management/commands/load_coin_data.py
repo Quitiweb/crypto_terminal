@@ -23,7 +23,7 @@ class Command(BaseCommand):
 
     def load_coins(self):
         print()
-        print("Processing all the data. This make take a while. Please, be patient ...")
+        print("Processing all the data. This could take a while. Please, be patient ...")
         print()
         files = os.listdir(self.path)
         len_files = len(files)

@@ -3,10 +3,12 @@ SHELL := /bin/bash
 install:
 	python3 -m venv .venv
 	source .venv/bin/activate && pip install -r requirements.txt
-	source .venv/bin/activate && pre-commit install
 
 start_django_server:
 	source .venv/bin/activate && python manage.py runserver
+
+run_streamlit:
+	source .venv/bin/activate && streamlit run st_dashboard.py
 
 init_database:
 	source .venv/bin/activate && python manage.py migrate
