@@ -53,6 +53,17 @@ def get_min_max_dates():
     return fmin, fmax
 
 
+def get_min_max_dates_by_symbol(symbol):
+    response = create_session_and_call(f"/coins/dates_by_symbol/{symbol}/")
+
+    min_date = response.json()['min_date']
+    max_date = response.json()['max_date']
+    fmin = datetime.datetime.strptime(min_date, "%Y-%m-%dT%H:%M:%SZ")
+    fmax = datetime.datetime.strptime(max_date, "%Y-%m-%dT%H:%M:%SZ")
+
+    return fmin, fmax
+
+
 def buy_and_sell_times_to_maximise_profit(ini_date, end_date, coin):
     """
         Finds the best buying and selling dates for maximum profit.
@@ -79,8 +90,21 @@ def buy_and_sell_times_to_maximise_profit(ini_date, end_date, coin):
         cdate = datetime.datetime.strptime(pd['date'], "%Y-%m-%dT%H:%M:%SZ").date()
         dates.append(cdate)
 
-    max_profit = round(get_maximum_profit(prices), 2)
-    return max_profit, get_buy_and_sell_times(prices, dates)
+    max_profit = get_maximum_profit(prices)
+    round_value = 5
+    if max_profit > 1:
+        round_value = 2
+
+    max_profit = round(max_profit, round_value)
+    buy_and_sell = get_buy_and_sell_times(prices, dates)
+
+    results = {
+        'prices': prices,
+        'dates': dates,
+        'max_profit': max_profit,
+        'buy_sell': buy_and_sell,
+    }
+    return results
 
 
 def get_buy_and_sell_times(prices, dates):
@@ -95,11 +119,11 @@ def get_buy_and_sell_times(prices, dates):
                 - Buy on date: 01/02/2021 and Sell on date: 05/02/2021
                 - Buy on date: 12/02/2021 and Sell on date: 19/02/2021
     """
-    dates_result = []
     prices_len = len(prices)
     if prices_len <= 1:
         return []
 
+    dates_result = []
     count = 0
     while count < (prices_len - 1):
         # BUY

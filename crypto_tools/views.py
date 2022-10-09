@@ -45,6 +45,16 @@ class CoinsViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @action(methods=['GET'], url_path=r'dates_by_symbol/(?P<symbol>\w+)', detail=False)
+    def dates_by_symbol(self, request, symbol):
+        """
+            Returns min and max dates of the given symbol coin
+        """
+        min_date = CryptoCoin.objects.filter(symbol=symbol).earliest('date').date
+        max_date = CryptoCoin.objects.filter(symbol=symbol).latest('date').date
+
+        return Response({'min_date': min_date, 'max_date': max_date}, status=status.HTTP_200_OK)
+
 
 class CoinsListViewSet(viewsets.GenericViewSet, mixins.ListModelMixin):
     """

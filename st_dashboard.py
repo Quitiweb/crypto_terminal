@@ -4,7 +4,8 @@ import streamlit as st
 
 from crypto_tools.utils import (
     get_all_coins_from_api, get_close_price, get_coin_names_and_symbols,
-    get_min_max_dates, buy_and_sell_times_to_maximise_profit
+    get_min_max_dates, buy_and_sell_times_to_maximise_profit,
+    get_min_max_dates_by_symbol
 )
 
 MIN_DATE, MAX_DATE = get_min_max_dates()
@@ -62,31 +63,48 @@ def question_three(coins_df):
         'Select a coin to show profits',
         coins_df['symbol']
     )
+    min_date = False
+    max_date = False
+    if ccoin:
+        min_date, max_date = get_min_max_dates_by_symbol(ccoin)
     date_ini = st.date_input(
         "Select a start date",
-        datetime.date(2015, 6, 1),
-        min_value=MIN_DATE,
-        max_value=MAX_DATE
+        datetime.date(2020, 11, 6),
+        min_value=min_date if min_date else MIN_DATE,
+        max_value=max_date if max_date else MAX_DATE
     )
     date_end = st.date_input(
         "Select an end date",
-        datetime.date(2015, 7, 31),
-        min_value=MIN_DATE,
-        max_value=MAX_DATE
+        datetime.date(2020, 12, 15),
+        min_value=min_date if min_date else MIN_DATE,
+        max_value=max_date if max_date else MAX_DATE
     )
     st.markdown("---")
 
-    max_profit, buy_and_sell = buy_and_sell_times_to_maximise_profit(date_ini, date_end, ccoin)
+    results = {}
+    if date_end >= date_ini:
+        results = buy_and_sell_times_to_maximise_profit(date_ini, date_end, ccoin)
 
-    "The maximum profit for this coin and the dates selected is"
-    st.success(str(max_profit) + " €")
+    if results:
+        "The maximum profit for this coin and the dates selected is"
+        st.success(str(results['max_profit']) + " €")
 
-    "Best buy and sell times"
-    for idx, bs in enumerate(buy_and_sell):
-        if idx % 2:
-            st.success(bs)
-        else:
-            st.warning(bs)
+        "Best buy and sell times"
+        dates_columns = st.columns([2, 2])
+        buy_sell_len = len(results['buy_sell'])
+        col = 0
+        for idx, bs in enumerate(results['buy_sell']):
+            if not col and buy_sell_len / 2 <= idx:
+                col = 1
+            if idx % 2:
+                dates_columns[col].success(bs)
+            else:
+                dates_columns[col].warning(bs)
+
+        prices_cd = pd.DataFrame(results['prices'], results['dates'], columns=['prices'])
+        st.line_chart(prices_cd)
+    else:
+        st.error("No results for the inputs selected")
 
 
 def main():
@@ -99,13 +117,10 @@ def main():
     crypto_coins_count()
 
     coins_df = pd.DataFrame.from_dict(get_coin_names_and_symbols())
-
     # Q1
     question_one(coins_df)
-
     # Q2
     question_two(coins_df)
-
     # Q3
     question_three(coins_df)
 
